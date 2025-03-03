@@ -1,26 +1,26 @@
 import { Schema, Types, model, type InferSchemaType } from "mongoose";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 
 // Define the schema for the User collection in MongoDB
 const userSchema = new Schema(
   {
     image: {
-      type: String
+      type: String,
     },
     mail: {
       type: String,
       required: true,
-      unique: [true, "User already exists."] // Enforce uniqueness to avoid duplicate emails
+      unique: [true, "User already exists."], // Enforce uniqueness to avoid duplicate emails
     },
     name: {
-      type: String
+      type: String,
     },
     title: String,
     educations: [String],
     password: {
       type: String,
-      select: false // Automatically exclude from query results
-    }
+      select: false, // Automatically exclude from query results
+    },
   },
   { timestamps: true } // Automatically add `createdAt` and `updatedAt` timestamps to each document
 );
@@ -43,7 +43,9 @@ userSchema.pre("save", async function (next) {
 
 // Infer TypeScript type for the schema
 // `InferSchemaType<typeof userSchema>` generates the type based on the schema definition
-export type UserType = InferSchemaType<typeof userSchema> & { _id: Types.ObjectId };
+export type UserType = InferSchemaType<typeof userSchema> & {
+  _id: Types.ObjectId;
+};
 
 // Create a Mongoose model for the User schema
 // This model provides an interface to interact with the "User" collection in MongoDB
